@@ -71,12 +71,4 @@ int main()
 	adress.set_mass_city(amount);
 	adress.sort_mass_city(amount);
 	adress.final_result(amount,ofile);
-
 }
-
-//string massiv[]{ "груша", "яблоко", "апельсин", "авокадо", "ананас" };
-//sort(massiv, massiv + 5);
-//for (int i = 0; i < sizeof(massiv) / sizeof(massiv[0]); i++)
-//{
-//    cout << massiv[i] << endl;
-//}
