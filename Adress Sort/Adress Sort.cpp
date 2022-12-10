@@ -10,45 +10,32 @@ class Adress
 {
 private:
 	string* mass_adress;
-	string* mass_city;
 public:
-	Adress(int amount)
+	Adress(int amount,ifstream &ifile)
 	{
-		mass_adress = new string[amount * 4];
-		mass_city = new string[amount];
-	}
-
-	void set_adress(string something, int i)
-	{
-		mass_adress[i] = something;
-	}
-
-	void set_mass_city(int amount)
-	{
-		int i = 0;
-		for (int j = 0; j < amount * 4; j += 4)
+		string something;
+		mass_adress = new string[amount];
+		for (int i = 0; i < 4; i++)
 		{
-			mass_city[i] = mass_adress[j];
-			i++;
+			ifile >> something;
+			mass_adress[i] = something;
 		}
 	}
-
-	void sort_mass_city(int amount)
+	string get_city()
 	{
-		sort(mass_city, mass_city + amount);
+		return mass_adress[0];
 	}
-	void final_result(int amount,ofstream &ofile)
+	void adress_to_file(ofstream &ofile)
 	{
-		ofile << amount << endl;
-		for (int i = 0; i < amount; i++)
+		for (int i = 0; i < 4; i++)
 		{
-			int j = 0;
-			while (mass_city[i] != mass_adress[j])
+			ofile << mass_adress[i];
+			if (i != 3)
 			{
-				j++;
-			}		
-			ofile << mass_adress[j] << ", " << mass_adress[j + 1] << ", " << mass_adress[j + 2] << ", " << mass_adress[j + 3] << endl;
+				ofile << ", ";
+			}
 		}
+		ofile << endl;
 	}
 };
 
@@ -62,13 +49,48 @@ int main()
 	int amount;
 	string something;
 	ifile >> amount;
-	Adress adress(amount);
-	for (int i = 0; i < amount * 4; i++)
+	string* city = new string[amount];
+
+	Adress adress1(amount,ifile);
+	city[0] = adress1.get_city();
+
+	Adress adress2(amount,ifile);
+	city[1] = adress2.get_city();
+
+	Adress adress3(amount,ifile);
+	city[2] = adress3.get_city();
+
+	Adress adress4(amount,ifile);
+	city[3] = adress4.get_city();
+
+	Adress adress5(amount,ifile);
+	city[4] = adress5.get_city();
+
+	sort(city, city + amount);
+
+	ofile << amount << endl;
+	for (int i = 0; i < amount; i++)
 	{
-		ifile >> something;
-		adress.set_adress(something, i);
+		if (city[i] == adress1.get_city())
+		{
+			adress1.adress_to_file(ofile);
+		}
+		if (city[i] == adress2.get_city())
+		{
+			adress2.adress_to_file(ofile);
+		}
+		if (city[i] == adress3.get_city())
+		{
+			adress3.adress_to_file(ofile);
+		}
+		if (city[i] == adress4.get_city())
+		{
+			adress4.adress_to_file(ofile);
+		}
+		if (city[i] == adress5.get_city())
+		{
+			adress5.adress_to_file(ofile);
+		}
 	}
-	adress.set_mass_city(amount);
-	adress.sort_mass_city(amount);
-	adress.final_result(amount,ofile);
+
 }
