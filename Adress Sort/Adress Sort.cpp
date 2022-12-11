@@ -65,4 +65,6 @@ int main()
 			}
 		}
 	}
+	delete[] addresses;
+	delete[] city;
 }
