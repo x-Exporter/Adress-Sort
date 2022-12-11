@@ -9,36 +9,28 @@ using namespace std;
 class Adress
 {
 private:
-	string* mass_adress;
+	string city = "City";
+	string street = "Street";
+	int house_num = 0;
+	int apartments_num = 0;
 public:
-	Adress(int amount,ifstream &ifile)
+	void set_info(ifstream& ifile)
 	{
-		string something;
-		mass_adress = new string[amount];
-		for (int i = 0; i < 4; i++)
-		{
-			ifile >> something;
-			mass_adress[i] = something;
-		}
+		ifile >> city;
+		ifile >> street;
+		ifile >> house_num;
+		ifile >> apartments_num;
 	}
 	string get_city()
 	{
-		return mass_adress[0];
+		return city;
 	}
-	void adress_to_file(ofstream &ofile)
+
+	void put_adress(ofstream &ofile)
 	{
-		for (int i = 0; i < 4; i++)
-		{
-			ofile << mass_adress[i];
-			if (i != 3)
-			{
-				ofile << ", ";
-			}
-		}
-		ofile << endl;
+		ofile << city << ", " << street << ", " << house_num << ", " << apartments_num << ", " << endl;
 	}
 };
-
 
 int main()
 {
@@ -49,48 +41,28 @@ int main()
 	int amount;
 	string something;
 	ifile >> amount;
+	Adress *addresses = new Adress[amount];
 	string* city = new string[amount];
-
-	Adress adress1(amount,ifile);
-	city[0] = adress1.get_city();
-
-	Adress adress2(amount,ifile);
-	city[1] = adress2.get_city();
-
-	Adress adress3(amount,ifile);
-	city[2] = adress3.get_city();
-
-	Adress adress4(amount,ifile);
-	city[3] = adress4.get_city();
-
-	Adress adress5(amount,ifile);
-	city[4] = adress5.get_city();
-
-	sort(city, city + amount);
-
-	ofile << amount << endl;
+	
 	for (int i = 0; i < amount; i++)
 	{
-		if (city[i] == adress1.get_city())
+		addresses[i].set_info(ifile);
+	}
+	for (int i = 0; i < amount; i++)
+	{
+		city[i] = addresses[i].get_city();
+	}
+	sort(city, city + amount);
+	ofile << amount << endl;
+
+	for (int i = 0; i < amount; i++)
+	{
+		for (int j = 0; j < amount; j++)
 		{
-			adress1.adress_to_file(ofile);
-		}
-		if (city[i] == adress2.get_city())
-		{
-			adress2.adress_to_file(ofile);
-		}
-		if (city[i] == adress3.get_city())
-		{
-			adress3.adress_to_file(ofile);
-		}
-		if (city[i] == adress4.get_city())
-		{
-			adress4.adress_to_file(ofile);
-		}
-		if (city[i] == adress5.get_city())
-		{
-			adress5.adress_to_file(ofile);
+			if (city[i] == addresses[j].get_city())
+			{
+				addresses[j].put_adress(ofile);
+			}
 		}
 	}
-
 }
